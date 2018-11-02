@@ -12,8 +12,8 @@ your option.
 [Apache License, Version 2.0]: LICENSE-APACHE
 [MIT License]: LICENSE-MIT
 
-## Documents
+## Index
 
-+ [master]
++ [numext_fixed_uint]
 
-[master]: docs/master/
+[numext_fixed_uint]: numext_fixed_uint/
