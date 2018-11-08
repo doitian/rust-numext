@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["construct_fixed_uints",""],["derive_fixed_uint",""]]});
+initSidebarItems({"fn":[["construct_fixed_uints",""]]});

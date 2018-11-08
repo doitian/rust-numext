@@ -70,7 +70,7 @@
 <span class="kw">mod</span> <span class="ident">internal</span>;
 
 <span class="kw">impl</span> <span class="ident">UintConstructor</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">construct_all</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> (<span class="ident">TokenStream</span>, <span class="ident">TokenStream</span>) {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">construct_all</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">ucs</span>: <span class="kw-2">&amp;</span>[<span class="self">Self</span>]) <span class="op">-&gt;</span> (<span class="ident">TokenStream</span>, <span class="ident">TokenStream</span>) {
         <span class="self">self</span>.<span class="ident">clear</span>();
 
         <span class="comment">// kernal</span>
@@ -98,7 +98,7 @@
         <span class="comment">// extension</span>
         <span class="self">self</span>.<span class="ident">with_rand</span>();
 
-        <span class="self">self</span>.<span class="ident">output</span>()
+        <span class="self">self</span>.<span class="ident">output</span>(<span class="ident">ucs</span>)
     }
 }
 </pre>
