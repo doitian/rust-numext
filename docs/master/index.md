@@ -15,5 +15,7 @@ your option.
 ## Index
 
 + [numext_fixed_uint]
++ [numext_fixed_hash]
 
 [numext_fixed_uint]: numext_fixed_uint/
+[numext_fixed_hash]: numext_fixed_hash/
