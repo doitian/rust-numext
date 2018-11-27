@@ -173,6 +173,47 @@
 <span id="173">173</span>
 <span id="174">174</span>
 <span id="175">175</span>
+<span id="176">176</span>
+<span id="177">177</span>
+<span id="178">178</span>
+<span id="179">179</span>
+<span id="180">180</span>
+<span id="181">181</span>
+<span id="182">182</span>
+<span id="183">183</span>
+<span id="184">184</span>
+<span id="185">185</span>
+<span id="186">186</span>
+<span id="187">187</span>
+<span id="188">188</span>
+<span id="189">189</span>
+<span id="190">190</span>
+<span id="191">191</span>
+<span id="192">192</span>
+<span id="193">193</span>
+<span id="194">194</span>
+<span id="195">195</span>
+<span id="196">196</span>
+<span id="197">197</span>
+<span id="198">198</span>
+<span id="199">199</span>
+<span id="200">200</span>
+<span id="201">201</span>
+<span id="202">202</span>
+<span id="203">203</span>
+<span id="204">204</span>
+<span id="205">205</span>
+<span id="206">206</span>
+<span id="207">207</span>
+<span id="208">208</span>
+<span id="209">209</span>
+<span id="210">210</span>
+<span id="211">211</span>
+<span id="212">212</span>
+<span id="213">213</span>
+<span id="214">214</span>
+<span id="215">215</span>
+<span id="216">216</span>
 </pre><pre class="rust ">
 <span class="comment">// Copyright 2018 Rust-NumExt Developers</span>
 <span class="comment">//</span>
@@ -331,7 +372,7 @@
             })
         };
         <span class="kw">let</span> <span class="ident">part</span> <span class="op">=</span> <span class="macro">quote</span><span class="macro">!</span>(
-            <span class="doccomment">/// Convert from a hexadecimal string.</span>
+            <span class="doccomment">/// Convert from a fixed length hexadecimal string.</span>
             <span class="attribute">#[<span class="ident">inline</span>]</span>
             <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_hex_str</span>(<span class="ident">input</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, #<span class="ident">error_name</span><span class="op">&gt;</span> {
                 <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="ident">input</span>.<span class="ident">len</span>();
@@ -342,6 +383,47 @@
                 {
                     <span class="kw">let</span> <span class="ident">inner</span> <span class="op">=</span> <span class="ident">ret</span>.<span class="ident">mut_inner</span>();
                     #<span class="ident">part_core</span>
+                }
+                <span class="prelude-val">Ok</span>(<span class="ident">ret</span>)
+            }
+            <span class="doccomment">/// Convert from an arbitrary length zero-trimmed hexadecimal string.</span>
+            <span class="doccomment">/// Fisrt char should not be zero if the input has more than one char.</span>
+            <span class="attribute">#[<span class="ident">inline</span>]</span>
+            <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_trimmed_hex_str</span>(<span class="ident">input</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, #<span class="ident">error_name</span><span class="op">&gt;</span> {
+                <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="ident">input</span>.<span class="ident">len</span>();
+                <span class="kw">if</span> <span class="ident">len</span> <span class="op">==</span> <span class="number">0</span> <span class="op">||</span> <span class="ident">len</span> <span class="op">&gt;</span> #<span class="ident">char_amount_max</span> {
+                    <span class="prelude-val">Err</span>(<span class="ident">FromStrError</span>::<span class="ident">InvalidLength</span>(<span class="ident">len</span>))<span class="question-mark">?</span>;
+                } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">input</span>.<span class="ident">as_bytes</span>()[<span class="number">0</span>] <span class="op">==</span> <span class="string">b&#39;0&#39;</span> {
+                    <span class="kw">if</span> <span class="ident">len</span> <span class="op">==</span> <span class="number">1</span> {
+                        <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="self">Self</span>::<span class="ident">zero</span>());
+                    } <span class="kw">else</span> {
+                        <span class="prelude-val">Err</span>(<span class="ident">FromStrError</span>::<span class="ident">InvalidCharacter</span> { <span class="ident">chr</span>: <span class="string">b&#39;0&#39;</span>, <span class="ident">idx</span>: <span class="number">0</span> })<span class="question-mark">?</span>;
+                    }
+                }
+                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ret</span> <span class="op">=</span> <span class="self">Self</span>::<span class="ident">zero</span>();
+                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">input_bytes</span> <span class="op">=</span> <span class="ident">input</span>.<span class="ident">bytes</span>();
+                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">idx</span> <span class="op">=</span> <span class="number">0</span>;
+                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">unit_idx</span> <span class="op">=</span> (#<span class="ident">char_amount_max</span> <span class="op">-</span> <span class="ident">len</span>) <span class="op">/</span> <span class="number">2</span>;
+                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">high</span> <span class="op">=</span> <span class="ident">len</span> <span class="op">%</span> <span class="number">2</span> <span class="op">==</span> <span class="number">0</span>;
+                {
+                    <span class="kw">let</span> <span class="ident">inner</span> <span class="op">=</span> <span class="ident">ret</span>.<span class="ident">mut_inner</span>();
+                    <span class="kw">for</span> <span class="ident">chr</span> <span class="kw">in</span> <span class="ident">input_bytes</span> {
+                        <span class="kw">let</span> <span class="ident">v</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">chr</span> {
+                            <span class="string">b&#39;a&#39;</span>...<span class="string">b&#39;f&#39;</span> <span class="op">=&gt;</span> <span class="ident">chr</span> <span class="op">-</span> <span class="string">b&#39;a&#39;</span> <span class="op">+</span> <span class="number">10</span>,
+                            <span class="string">b&#39;A&#39;</span>...<span class="string">b&#39;F&#39;</span> <span class="op">=&gt;</span> <span class="ident">chr</span> <span class="op">-</span> <span class="string">b&#39;A&#39;</span> <span class="op">+</span> <span class="number">10</span>,
+                            <span class="string">b&#39;0&#39;</span>...<span class="string">b&#39;9&#39;</span> <span class="op">=&gt;</span> <span class="ident">chr</span> <span class="op">-</span> <span class="string">b&#39;0&#39;</span>,
+                            <span class="kw">_</span> <span class="op">=&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">FromStrError</span>::<span class="ident">InvalidCharacter</span> { <span class="ident">chr</span>, <span class="ident">idx</span> })<span class="question-mark">?</span>,
+                        };
+                        <span class="ident">idx</span> <span class="op">+=</span> <span class="number">1</span>;
+                        <span class="kw">if</span> <span class="ident">high</span> {
+                            <span class="ident">inner</span>[<span class="ident">unit_idx</span>] <span class="op">=</span> <span class="ident">v</span> <span class="op">*</span> <span class="number">16</span>;
+                            <span class="ident">high</span> <span class="op">=</span> <span class="bool-val">false</span>;
+                        } <span class="kw">else</span> {
+                            <span class="ident">inner</span>[<span class="ident">unit_idx</span>] <span class="op">+=</span> <span class="ident">v</span>;
+                            <span class="ident">high</span> <span class="op">=</span> <span class="bool-val">true</span>;
+                            <span class="ident">unit_idx</span> <span class="op">+=</span> <span class="number">1</span>;
+                        }
+                    }
                 }
                 <span class="prelude-val">Ok</span>(<span class="ident">ret</span>)
             }
